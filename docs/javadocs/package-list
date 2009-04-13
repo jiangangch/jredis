@@ -1,0 +1,7 @@
+org.jredis
+org.jredis.bench
+org.jredis.connector
+org.jredis.examples
+org.jredis.ri.alphazero
+org.jredis.ri.alphazero.bench
+org.jredis.ri.alphazero.util

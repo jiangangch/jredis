@@ -1,0 +1,66 @@
+### Running straight in Eclipse IDE
+
+==> Usage: [db [conn [req [size [host]]]]
+
+-------------------------------------------------------------------- JREDIS ----
+---
+--- Benchmarking JRedis provider: org.jredis.ri.alphazero.JRedisClient
+--- host:127.0.0.1:6379 (db:13) | bytes:3 | conns:5 | reqs/conn:100000 
+---
+--------------------------------------------------------------------------------
+
+
+ ...
+===== PING =====
+5 concurrent clients (100000 PINGs each) [host: 127.0.0.1]
+  ==> 500000 total requests @ 16.174000 seconds
+  ==> 30913.812500/second
+
+			min: 15152 msecs
+			max: 16174 msecs
+
+ ...
+===== SET =====
+5 concurrent clients (100000 SETs each) [host: 127.0.0.1]
+  ==> 500000 total requests @ 17.691000 seconds
+  ==> 28262.958984/second
+
+			min: 16828 msecs
+			max: 17690 msecs
+
+ ...
+===== SETNX =====
+5 concurrent clients (100000 SETNXs each) [host: 127.0.0.1]
+  ==> 500000 total requests @ 17.618999 seconds
+  ==> 28378.455078/second
+
+			min: 16555 msecs
+			max: 17618 msecs
+
+ ...
+===== GET =====
+5 concurrent clients (100000 GETs each) [host: 127.0.0.1]
+  ==> 500000 total requests @ 17.579000 seconds
+  ==> 28443.029297/second
+
+			min: 16531 msecs
+			max: 17576 msecs
+
+ ...
+===== INCR =====
+5 concurrent clients (100000 INCRs each) [host: 127.0.0.1]
+  ==> 500000 total requests @ 19.402000 seconds
+  ==> 25770.539063/second
+
+			min: 18388 msecs
+			max: 19401 msecs
+
+ ...
+===== DECR =====
+5 concurrent clients (100000 DECRs each) [host: 127.0.0.1]
+  ==> 500000 total requests @ 19.122999 seconds
+  ==> 26146.525391/second
+
+			min: 17839 msecs
+			max: 19123 msecs
+
