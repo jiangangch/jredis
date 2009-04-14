@@ -1,0 +1,8 @@
+# build the core jar
+
+echo "building jredis-alphazero.jar | core classes - no source .."
+
+jar cvf ../dist/jredis-alphazero.jar -C ../classes/src .
+
+echo "done"
+
