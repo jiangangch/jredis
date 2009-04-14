@@ -203,7 +203,6 @@ public class JRedisClientTest extends TestCase {
 		}
 		Log.log("TEST: new() -> set(key) -> SMEMBERS (key) ->quit()");
 		
-		
 		try {
 			JRedis r = new JRedisClient();
 			r.lrange("no-such-list", 0, 99);		// should return null no ERR
@@ -228,8 +227,37 @@ public class JRedisClientTest extends TestCase {
 				fail("Did not raise expected ERR on operating on key of wrong type ");
 			}
 		}
+		Log.log("TEST: new() -> set(key) -> LRANGE (key) ->quit()");
 		
-		Log.log("TEST: new() -> set(key) -> SMEMBERS (key) ->quit()");
+		try {
+			JRedis r = new JRedisClient();
+			r.get ("no-such-key");		// should return null no ERR
+			r.quit();
+		}
+		catch (RedisException e) {
+			Log.error("Test setup create - connect - smembers: " + e.getLocalizedMessage());
+			fail("init failed: " + e.getLocalizedMessage());
+		}
+		/* KEEP THIS - the current redis behavior is inconsistent.  Either we can't just
+		 * step on keys of wrong type (as in going from String to list or set, or we can
+		 * as in going from set list to string...
+		 */
+//		expectedError = false;
+//		try {
+//			String not_a_string = "not-a-string";
+//			JRedis r = new JRedisClient();
+//			r.sadd(not_a_string, 99);			// should throw exception
+//			r.set(not_a_string, "a value");
+//		}
+//		catch (RedisException e) { expectedError = true;}
+//		finally {
+//			if(!expectedError) {
+//				Log.error("Test ");
+//				fail("Did not raise expected ERR on operating on key of wrong type ");
+//			}
+//		}
+//		Log.log("TEST: new() -> SADD(key, blah) -> SET (key) ->quit()");
+		
 		try {
 			redis = new JRedisClient();
 			redis.incr("__jredisclienttestkey__");  // sorry, but can't do a select if this test is to be meaningful
