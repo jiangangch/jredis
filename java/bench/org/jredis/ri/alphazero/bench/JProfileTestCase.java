@@ -44,8 +44,12 @@ public class JProfileTestCase {
 //		redis.sadd(key, "member 3");
 //		redis.sadd(key, "member 4");
 		redis.incrby(key, Integer.MAX_VALUE*2);
+		long start = System.currentTimeMillis();
 		for(Long j=0L; j<iter; j++) {
 			redis.incr(key);
 		}
+		long delta = System.currentTimeMillis() - start;
+		float rate = (iter * 1000) / delta;
+		System.out.format("%d iterations | %d msec | %8.2f /sec \n", iter, delta, rate);
 	}
 }
