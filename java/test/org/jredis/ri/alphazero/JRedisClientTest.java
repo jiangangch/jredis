@@ -178,7 +178,7 @@ public class JRedisClientTest extends TestCase {
 		
 		try {
 			JRedis r = new JRedisClient();
-			r.smembers("no-such-set");
+			r.smembers("no-such-set");			// should return null not ERR
 			r.quit();
 		}
 		catch (RedisException e) {
@@ -192,7 +192,7 @@ public class JRedisClientTest extends TestCase {
 			String not_a_set = "not-a-set";
 			JRedis r = new JRedisClient();
 			r.set(not_a_set, "a value");
-			r.smembers(not_a_set);
+			r.smembers(not_a_set);					// should throw exception
 		}
 		catch (RedisException e) { expectedError = true;}
 		finally {
@@ -203,6 +203,33 @@ public class JRedisClientTest extends TestCase {
 		}
 		Log.log("TEST: new() -> set(key) -> SMEMBERS (key) ->quit()");
 		
+		
+		try {
+			JRedis r = new JRedisClient();
+			r.lrange("no-such-list", 0, 99);		// should return null no ERR
+			r.quit();
+		}
+		catch (RedisException e) {
+			Log.error("Test setup create - connect - smembers: " + e.getLocalizedMessage());
+			fail("init failed: " + e.getLocalizedMessage());
+		}
+		
+		expectedError = false;
+		try {
+			String not_a_list = "not-a-list";
+			JRedis r = new JRedisClient();
+			r.set(not_a_list, "a value");
+			r.lrange(not_a_list, 0, 99);			// should throw exception
+		}
+		catch (RedisException e) { expectedError = true;}
+		finally {
+			if(!expectedError) {
+				Log.error("Test ");
+				fail("Did not raise expected ERR on operating on key of wrong type ");
+			}
+		}
+		
+		Log.log("TEST: new() -> set(key) -> SMEMBERS (key) ->quit()");
 		try {
 			redis = new JRedisClient();
 			redis.incr("__jredisclienttestkey__");  // sorry, but can't do a select if this test is to be meaningful
