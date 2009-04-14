@@ -359,7 +359,12 @@ public class SynchProtocol extends ProtocolBase {
 		public void read(InputStream in) throws ClientRuntimeException, ProviderException {
 			if(didRead) return;
 			int count = super.readCount(in, true);
-			if(count != -2){
+			if(status.isError()) {
+				didRead = true;
+				return;
+			}
+//			if(count != -2){
+			if(count >= 0){
 				datalist = new ArrayList<byte[]>(count);
 				try {
 					int size = -1;
