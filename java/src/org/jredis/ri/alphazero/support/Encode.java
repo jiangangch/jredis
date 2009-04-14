@@ -14,7 +14,7 @@
  *   limitations under the License.
  */
 
-package org.jredis;
+package org.jredis.ri.alphazero.support;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -25,6 +25,8 @@ import java.io.Serializable;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.jredis.JRedis;
 
 /**
  * Note that this is the one element of this package that is most likely to change
@@ -96,15 +98,15 @@ public class Encode {
 	 * @param byteList
 	 * @return
 	 */
-	public static final <T extends Serializable>  
-	List<T> decode (List<byte[]> byteList) {
-		List<T>		objectList = new ArrayList<T>(byteList.size());
-		for (byte[] bytes : byteList) {
-			T object = decode(bytes);
-			objectList.add (object);
-		}
-		return objectList;
-	}
+//	public static final <T extends Serializable>  
+//	List<T> decode (List<byte[]> byteList) {
+//		List<T>		objectList = new ArrayList<T>(byteList.size());
+//		for (byte[] bytes : byteList) {
+//			T object = decode(bytes);
+//			objectList.add (object);
+//		}
+//		return objectList;
+//	}
 	/**
 	 * This helper method will assume that the byte[] provided are the serialized
 	 * bytes obtainable for an instance of type T obtained from {@link ObjectOutputStream}
@@ -180,16 +182,16 @@ public class Encode {
 			throw new RuntimeException("Error serializing object"+obj+" => " + e);
 		}
 		// this for development phase only -- will be removed.  (A bit of performance hit.)
-		finally {
-			// test it!
-			try {
-				T decoded = decode(bytes);  // we want this compile warning to remember to remove this in future.
-			}
-			catch (Exception e) {
-				e.printStackTrace();
-				System.err.format("error in verifying the decoding of the encoded object %s", obj.getClass().getName());
-			}
-		}
+//		finally {
+//			// test it!
+//			try {
+//				T decoded = decode(bytes);  // we want this compile warning to remember to remove this in future.
+//			}
+//			catch (Exception e) {
+//				e.printStackTrace();
+//				System.err.format("error in verifying the decoding of the encoded object %s", obj.getClass().getName());
+//			}
+//		}
 		return bytes;
 	}
 }

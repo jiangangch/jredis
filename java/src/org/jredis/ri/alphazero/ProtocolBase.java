@@ -29,8 +29,8 @@ import org.jredis.connector.ProviderException;
 import org.jredis.connector.Request;
 import org.jredis.connector.Response;
 import org.jredis.connector.ResponseStatus;
-import org.jredis.ri.alphazero.util.Assert;
-import org.jredis.ri.alphazero.util.Convert;
+import org.jredis.ri.alphazero.support.Assert;
+import org.jredis.ri.alphazero.support.Convert;
 
 
 /**
@@ -307,7 +307,7 @@ public abstract class ProtocolBase implements Protocol {
 			// -- moving all to long ..
 		case DBSIZE:
 		case LASTSAVE:
-			response = createNumberResponse (cmd, true);
+			response = createNumberResponse (cmd /*, true*/);
 			break;
 
 			/* ------------------------------ Bulk      Responses ----------------------------------- */
@@ -344,7 +344,7 @@ public abstract class ProtocolBase implements Protocol {
 	protected abstract ByteArrayOutputStream createRequestBufffer(Command cmd);
 	protected abstract Response createMultiBulkResponse(Command cmd) ;
 	protected abstract Response createBulkResponse(Command cmd) ;
-	protected abstract Response createNumberResponse(Command cmd, boolean bigNum) ;
+	protected abstract Response createNumberResponse(Command cmd /*, boolean bigNum*/) ;
 	protected abstract Response createBooleanResponse(Command cmd) ;
 	protected abstract Response createStringResponse(Command cmd) ;
 	protected abstract Response createStatusResponse(Command cmd);

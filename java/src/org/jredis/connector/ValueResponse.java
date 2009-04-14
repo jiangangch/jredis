@@ -42,12 +42,22 @@ public interface ValueResponse extends Response {
 	public long getLongValue () throws IllegalStateException;
 	
 	/**
+	 * Its gone.  Everything is 64 bit signed integer now.
 	 * This is deprecated but kept in the initial release just in case things change on the Redis side.
 	 * @return
 	 * @throws IllegalStateException
 	 */
-	@Deprecated
-	public int getIntValue () throws IllegalStateException;
+//	@Deprecated
+//	public int getIntValue () throws IllegalStateException;
+	
+	/**
+	 * @return
+	 * @throws IllegalStateException
+	 */
 	public String getStringValue () throws IllegalStateException;
+	/**
+	 * @return
+	 * @throws IllegalStateException
+	 */
 	public boolean getBooleanValue () throws IllegalStateException;
 }

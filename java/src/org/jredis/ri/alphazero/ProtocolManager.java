@@ -25,8 +25,8 @@ import org.jredis.connector.Connection;
 import org.jredis.connector.Protocol;
 import org.jredis.connector.ProtocolFactory;
 import org.jredis.connector.ProviderException;
-import org.jredis.ri.alphazero.util.Assert;
-import org.jredis.ri.alphazero.util.Log;
+import org.jredis.ri.alphazero.support.Assert;
+import org.jredis.ri.alphazero.support.Log;
 
 import com.sun.corba.se.pept.protocol.ProtocolHandler;
 

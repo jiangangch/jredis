@@ -31,8 +31,8 @@ import org.jredis.connector.Request;
 import org.jredis.connector.RequestListener;
 import org.jredis.connector.Response;
 import org.jredis.connector.ResponseStatus;
-import org.jredis.ri.alphazero.util.Assert;
-import org.jredis.ri.alphazero.util.Log;
+import org.jredis.ri.alphazero.support.Assert;
+import org.jredis.ri.alphazero.support.Log;
 
 
 /**

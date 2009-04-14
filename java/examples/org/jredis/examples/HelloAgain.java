@@ -18,11 +18,11 @@ package org.jredis.examples;
 
 import org.jredis.ClientRuntimeException;
 import org.jredis.Command;
-import org.jredis.Encode;
 import org.jredis.JRedis;
 import org.jredis.RedisException;
 import org.jredis.connector.ProviderException;
 import org.jredis.ri.alphazero.JRedisClient;
+import org.jredis.ri.alphazero.support.Encode;
 
 /**
  * Note this program will set a (hopefully non-coliding!) key in your DB 13.
@@ -41,6 +41,7 @@ public class HelloAgain {
 	private void run(String password) {
 		try {
 			JRedis	jredis = new JRedisClient();
+			jredis.incr("foo");
 			if(!password.equals("")) 
 				jredis.auth(password);
 			

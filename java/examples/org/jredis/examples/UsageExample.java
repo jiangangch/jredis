@@ -15,10 +15,10 @@
  */
 
 package org.jredis.examples;
-import static org.jredis.Encode.decode;
-import static org.jredis.Encode.encode;
-import static org.jredis.Encode.toInt;
-import static org.jredis.Encode.toStr;
+import static org.jredis.ri.alphazero.support.Encode.decode;
+import static org.jredis.ri.alphazero.support.Encode.encode;
+import static org.jredis.ri.alphazero.support.Encode.toInt;
+import static org.jredis.ri.alphazero.support.Encode.toStr;
 
 import java.util.List;
 import java.util.Random;
@@ -29,7 +29,7 @@ import org.jredis.JRedis;
 import org.jredis.RedisException;
 import org.jredis.connector.ProviderException;
 import org.jredis.ri.alphazero.JRedisClient;
-import org.jredis.ri.alphazero.util.Log;
+import org.jredis.ri.alphazero.support.Log;
 
 
 /**
@@ -231,11 +231,12 @@ public class UsageExample {
 				redis.sadd("object_set", obj);
 			}
 //			System.out.format (" and done.\n");
-			
-			List<SimpleBean>  members = decode (redis.smembers("object_set"));
-			for(SimpleBean obj : members) {
-				System.out.format("a member of 'object-set' => %s\n", obj.toString());
-			}
+
+			// TODO: redo this using Semantics extension
+//			List<SimpleBean>  members = decode (redis.smembers("object_set"));
+//			for(SimpleBean obj : members) {
+//				System.out.format("a member of 'object-set' => %s\n", obj.toString());
+//			}
 			List<String>  keys = redis.keys("objects::byteme*");
 //			System.out.format ("Getting our %d objects back from redis (we'll use KEYS here as well) ...", objcnt);
 			for(String key : keys) {

@@ -14,7 +14,7 @@
  *   limitations under the License.
  */
 
-package org.jredis.ri.alphazero.util;
+package org.jredis.ri.alphazero.support;
 
 /**
  * yes -- yet another logger.  This is to keep down the dependencies

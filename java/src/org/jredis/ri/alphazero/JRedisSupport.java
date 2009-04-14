@@ -25,19 +25,19 @@ import java.util.StringTokenizer;
 
 import org.jredis.ClientRuntimeException;
 import org.jredis.Command;
-import org.jredis.Encode;
 import org.jredis.JRedis;
 import org.jredis.RedisException;
 import org.jredis.RedisType;
 import org.jredis.Sort;
-import org.jredis.SortSupport;
 import org.jredis.connector.BulkResponse;
 import org.jredis.connector.Connection;
 import org.jredis.connector.MultiBulkResponse;
 import org.jredis.connector.ProviderException;
 import org.jredis.connector.ValueResponse;
-import org.jredis.ri.alphazero.util.Assert;
-import org.jredis.ri.alphazero.util.Convert;
+import org.jredis.ri.alphazero.support.Assert;
+import org.jredis.ri.alphazero.support.Convert;
+import org.jredis.ri.alphazero.support.Encode;
+import org.jredis.ri.alphazero.support.SortSupport;
 
 /**
  * 
@@ -449,7 +449,6 @@ public abstract class JRedisSupport implements JRedis {
 
 //	@Override
 	public long dbsize() throws RedisException {
-		/* value response */ /* who knows?  but we'll treat it as a VERY big number .. */
 		long value = Long.MIN_VALUE;
 		try {
 			ValueResponse valResponse = (ValueResponse) connection.serviceRequest(Command.DBSIZE);
@@ -462,7 +461,15 @@ public abstract class JRedisSupport implements JRedis {
 	}
 //	@Override
 	public long lastsave() throws RedisException {
-		throw new ProviderException("RedisClient.lastSave not implemented! [Apr 1, 2009]");
+		long value = Long.MIN_VALUE;
+		try {
+			ValueResponse valResponse = (ValueResponse) connection.serviceRequest(Command.LASTSAVE);
+			value = valResponse.getLongValue();
+		}
+		catch (ClassCastException e){
+			throw new ProviderException("Expecting a ValueResponse here => " + e.getLocalizedMessage(), e);
+		}
+		return value;
 	}
 
 	/* ------------------------------- commands returning byte[] --------- */

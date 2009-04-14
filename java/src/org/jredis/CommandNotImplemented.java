@@ -17,7 +17,6 @@
 package org.jredis;
 
 import org.jredis.connector.ProviderException;
-import org.jredis.ri.alphazero.util.Assert;
 
 
 /**
@@ -33,7 +32,6 @@ public final class CommandNotImplemented extends ProviderException {
 	private static final long serialVersionUID = _specification.Version.major;
 	
 	/**
-	 * [TODO: note that this won't work with {@link Assert}]
 	 * @param command
 	 */
 	public CommandNotImplemented (Command command) { super(command.code + " is not supported!");}

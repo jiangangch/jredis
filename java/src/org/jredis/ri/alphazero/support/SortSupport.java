@@ -14,11 +14,13 @@
  *   limitations under the License.
  */
 
-package org.jredis;
+package org.jredis.ri.alphazero.support;
 
 import java.util.List;
 
-import org.jredis.ri.alphazero.util.Assert;
+import org.jredis.ClientRuntimeException;
+import org.jredis.RedisException;
+import org.jredis.Sort;
 
 
 public abstract class SortSupport implements Sort {

@@ -17,4 +17,4 @@
 /**
  * Utility classes to support this implementation.
  */
-package org.jredis.ri.alphazero.util;
+package org.jredis.ri.alphazero.support;

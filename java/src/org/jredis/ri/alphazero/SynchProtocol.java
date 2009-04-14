@@ -33,7 +33,7 @@ import org.jredis.connector.Response;
 import org.jredis.connector.ResponseStatus;
 import org.jredis.connector.StatusResponse;
 import org.jredis.connector.ValueResponse;
-import org.jredis.ri.alphazero.util.Convert;
+import org.jredis.ri.alphazero.support.Convert;
 
 
 /**
@@ -92,7 +92,7 @@ public class SynchProtocol extends ProtocolBase {
 	@Override
 	protected Response createStatusResponse(Command cmd) {
 		if(null == cache_synchLineResponse)
-			cache_synchLineResponse = new SynchLineResponse(cmd);
+			cache_synchLineResponse = new SynchLineResponse(cmd, ValueType.STATUS);
 		else {
 			cache_synchLineResponse.reset(cmd);
 		}
@@ -102,7 +102,7 @@ public class SynchProtocol extends ProtocolBase {
 	@Override
 	protected Response createBooleanResponse(Command cmd) {
 		if(null == cache_synchLineResponse)
-			cache_synchLineResponse = new SynchLineResponse(cmd);
+			cache_synchLineResponse = new SynchLineResponse(cmd, ValueType.BOOLEAN);
 		else {
 			cache_synchLineResponse.reset(cmd, ValueType.BOOLEAN);
 		}
@@ -112,7 +112,7 @@ public class SynchProtocol extends ProtocolBase {
 	@Override
 	protected Response createStringResponse(Command cmd) {
 		if(null == cache_synchLineResponse)
-			cache_synchLineResponse = new SynchLineResponse(cmd);
+			cache_synchLineResponse = new SynchLineResponse(cmd, ValueType.STRING);
 		else {
 			cache_synchLineResponse.reset(cmd, ValueType.STRING);
 		}
@@ -120,11 +120,11 @@ public class SynchProtocol extends ProtocolBase {
 //		return new SynchLineResponse(cmd, ValueType.STRING);
 	}
 	@Override
-	protected Response createNumberResponse(Command cmd, boolean isBigNum) {
-		ValueType flavor = ValueType.NUMBER32;
-		if(isBigNum) flavor = ValueType.NUMBER64;
+	protected Response createNumberResponse(Command cmd /*, boolean isBigNum*/) {
+		ValueType flavor = ValueType.NUMBER64;
+//		if(isBigNum) flavor = ValueType.NUMBER64;
 		if(null == cache_synchLineResponse)
-			cache_synchLineResponse = new SynchLineResponse(cmd);
+			cache_synchLineResponse = new SynchLineResponse(cmd, ValueType.NUMBER64);
 		else {
 			cache_synchLineResponse.reset(cmd, flavor);
 		}
@@ -162,8 +162,8 @@ public class SynchProtocol extends ProtocolBase {
 	private enum ValueType {
 		STATUS,
 		BOOLEAN,
-		@Deprecated
-		NUMBER32,
+//		@Deprecated
+//		NUMBER32,
 		NUMBER64,
 		STRING
 	}
@@ -459,11 +459,11 @@ public class SynchProtocol extends ProtocolBase {
 		private long	longValue;
 		private boolean	booleanValue;
 		
-		/** used for status responses */
-		public SynchLineResponse(Command cmd) {
-			super(cmd, Type.Status);
-			flavor = ValueType.STATUS;
-		}
+//		/** used for status responses */
+//		public SynchLineResponse(Command cmd) {
+//			super(cmd, Type.Status);
+//			flavor = ValueType.STATUS;
+//		}
 		public SynchLineResponse(Command cmd, ValueType flavor) {
 			super(cmd, Type.Value);
 			this.flavor = flavor;
@@ -482,22 +482,22 @@ public class SynchProtocol extends ProtocolBase {
 		}
 //		@Override
 		public boolean getBooleanValue() throws IllegalStateException {
-			if(flavor != ValueType.BOOLEAN) throw new IllegalStateException ();
+			if(flavor != ValueType.BOOLEAN) throw new IllegalStateException ("Response value type is " + flavor.name() + " not " + ValueType.BOOLEAN.name());
 			return booleanValue;
 		}
-//		@Override
-		public int getIntValue() throws IllegalStateException {
-			if(flavor != ValueType.NUMBER32) throw new IllegalStateException ();
-			return intValue;
-		}
+////		@Override
+//		public int getIntValue() throws IllegalStateException {
+//			if(flavor != ValueType.NUMBER32) throw new IllegalStateException ("Response value type is " + flavor.name() + " not " + ValueType.NUMBER32.name());
+//			return intValue;
+//		}
 //		@Override
 		public long getLongValue() throws IllegalStateException {
-			if(flavor != ValueType.NUMBER64) throw new IllegalStateException ();
+			if(flavor != ValueType.NUMBER64) throw new IllegalStateException ("Response value type is " + flavor.name() + " not " + ValueType.NUMBER64.name());
 			return longValue;
 		}
 //		@Override
 		public String getStringValue() throws IllegalStateException {
-			if(flavor != ValueType.STRING) throw new IllegalStateException ();
+			if(flavor != ValueType.STRING) throw new IllegalStateException ("Response value type is " + flavor.name() + " not " + ValueType.STRING.name());
 			return stringValue;
 		}
 		/**
@@ -521,9 +521,9 @@ public class SynchProtocol extends ProtocolBase {
 						case BOOLEAN:
 							booleanValue = buffer[1]==49?true:false;
 							break;
-						case NUMBER32:
-							intValue = Convert.getInt (buffer, 1, offset-3);
-							break;
+//						case NUMBER32:
+//							intValue = Convert.getInt (buffer, 1, offset-3);
+//							break;
 						case NUMBER64:
 //							longValue = Long.parseLong(new String(buffer, 1, offset-3));
 							longValue = Convert.getLong (buffer, 1, offset-3);

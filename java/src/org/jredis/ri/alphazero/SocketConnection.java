@@ -27,8 +27,8 @@ import org.jredis.ClientRuntimeException;
 import org.jredis.Redis;
 import org.jredis.connector.Protocol;
 import org.jredis.connector.ProviderException;
-import org.jredis.ri.alphazero.util.Assert;
-import org.jredis.ri.alphazero.util.Log;
+import org.jredis.ri.alphazero.support.Assert;
+import org.jredis.ri.alphazero.support.Log;
 
 
 /**

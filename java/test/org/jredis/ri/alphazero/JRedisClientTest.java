@@ -24,18 +24,18 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
-import org.jredis.Encode;
 import org.jredis.JRedis;
 import org.jredis.RedisException;
 import org.jredis.RedisInfo;
 import org.jredis.RedisType;
 import org.jredis.ri.alphazero.JRedisClient;
-import org.jredis.ri.alphazero.util.Log;
+import org.jredis.ri.alphazero.support.Encode;
+import org.jredis.ri.alphazero.support.Log;
 
 import junit.framework.TestCase;
 
 
-public class RedisClientTest extends TestCase {
+public class JRedisClientTest extends TestCase {
 
 	// ------------------------------------------------------------------------
 	// TEST SETUP Consts
@@ -162,7 +162,37 @@ public class RedisClientTest extends TestCase {
 	// EXPIRE
 	// ------------------------------------------------------------------------
 	
-	public void testExistsCommands () {
+	public void testInit() {
+		Log.log("TEST: testing new and doX() for various permutations ...");
+		try {
+			redis = new JRedisClient().auth(password).ping();
+		}
+		catch (RedisException e) {
+			Log.error("Test setup create - connect - authorize: " + e.getLocalizedMessage());
+			fail("init failed: " + e.getLocalizedMessage());
+		}
+		try {
+			redis = new JRedisClient().ping();
+		}
+		catch (RedisException e) {
+			Log.error("Test setup create - connect - authorize: " + e.getLocalizedMessage());
+			fail("init failed: " + e.getLocalizedMessage());
+		}
+		try {
+			redis = new JRedisClient();
+			redis.incr("__jredisclienttestkey__");  // sorry, but can't do a select if this test is to be meaningful
+		}
+		catch (RedisException e) {
+			Log.error("Test setup create - connect - authorize: " + e.getLocalizedMessage());
+			fail("init failed: " + e.getLocalizedMessage());
+		}
+	}
+	// ------------------------------------------------------------------------
+	// *** TESTS *** Commands operating on DBs
+	// EXPIRE EXISTS SAVE SAVEBG LASTSAVE
+	// ------------------------------------------------------------------------
+	
+	public void testDBCommands () {
 		Log.log("TEST: test expire... this will Thread.sleep for a few secs ...");
 
 		try { redis.select(DB1).flushdb(); }
@@ -189,6 +219,10 @@ public class RedisClientTest extends TestCase {
 			Thread.sleep(2000);
 			assertFalse (redis.exists(key));
 			
+			long when = redis.lastsave();
+			redis.save();
+			long when2 = redis.lastsave();
+			assertTrue(when != when2);
 		}
 		catch (RedisException e1) { 
 			e1.printStackTrace();
@@ -376,10 +410,11 @@ public class RedisClientTest extends TestCase {
 			for (int i=0; i<smallcnt; i++){
 				redis.sadd(objectSet, objectList.get(i));
 			}
-			List<TestBean>  redisBeanList = Encode.decode(redis.smembers(objectSet));
-			for (int i=0; i<smallcnt; i++){
-				assertTrue(redisBeanList.contains(objectList.get(i)));
-			}
+			// TODO: redo using semantic interface
+//			List<TestBean>  redisBeanList = Encode.decode(redis.smembers(objectSet));
+//			for (int i=0; i<smallcnt; i++){
+//				assertTrue(redisBeanList.contains(objectList.get(i)));
+//			}
 			
 			/* as LIST values */
 			redis.flushdb();
@@ -388,10 +423,12 @@ public class RedisClientTest extends TestCase {
 			for (int i=0; i<smallcnt; i++){
 				redis.rpush(listkey, objectList.get(i));
 			}
-			List<TestBean>  redisRange = Encode.decode(redis.lrange(listkey, 0, smallcnt));
-			for (int i=0; i<smallcnt; i++){
-				assertTrue(redisRange.contains(objectList.get(i)));
-			}
+			
+			// TODO: redo using semantic interface
+//			List<TestBean>  redisRange = Encode.decode(redis.lrange(listkey, 0, smallcnt));
+//			for (int i=0; i<smallcnt; i++){
+//				assertTrue(redisRange.contains(objectList.get(i)));
+//			}
 			
 		}
 		catch (RedisException e1) { 

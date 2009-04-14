@@ -14,7 +14,7 @@
  *   limitations under the License.
  */
 
-package org.jredis.ri.alphazero.util;
+package org.jredis.ri.alphazero.support;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Formatter;
