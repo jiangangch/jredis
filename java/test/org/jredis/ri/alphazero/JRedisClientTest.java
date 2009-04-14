@@ -164,20 +164,45 @@ public class JRedisClientTest extends TestCase {
 	
 	public void testInit() {
 		Log.log("TEST: testing new and doX() for various permutations ...");
+		Log.log("TEST: ing new and basic initial doX() for various permutations ...");
+
 		try {
-			redis = new JRedisClient().auth(password).ping();
+			JRedis r = new JRedisClient().ping();
+			r.quit();
 		}
 		catch (RedisException e) {
-			Log.error("Test setup create - connect - authorize: " + e.getLocalizedMessage());
+			Log.error("Test setup create - connect - ping: " + e.getLocalizedMessage());
 			fail("init failed: " + e.getLocalizedMessage());
 		}
+		Log.log("TEST: PING");
+		
 		try {
-			redis = new JRedisClient().ping();
+			JRedis r = new JRedisClient();
+			r.smembers("no-such-set");
+			r.quit();
 		}
 		catch (RedisException e) {
-			Log.error("Test setup create - connect - authorize: " + e.getLocalizedMessage());
+			Log.error("Test setup create - connect - smembers: " + e.getLocalizedMessage());
 			fail("init failed: " + e.getLocalizedMessage());
 		}
+		Log.log("TEST: new() -> SMEMBERS on non-exist set ->quit()");
+		
+		boolean expectedError = false;
+		try {
+			String not_a_set = "not-a-set";
+			JRedis r = new JRedisClient();
+			r.set(not_a_set, "a value");
+			r.smembers(not_a_set);
+		}
+		catch (RedisException e) { expectedError = true;}
+		finally {
+			if(!expectedError) {
+				Log.error("Test ");
+				fail("Did not raise expected ERR on operating on key of wrong type ");
+			}
+		}
+		Log.log("TEST: new() -> set(key) -> SMEMBERS (key) ->quit()");
+		
 		try {
 			redis = new JRedisClient();
 			redis.incr("__jredisclienttestkey__");  // sorry, but can't do a select if this test is to be meaningful
